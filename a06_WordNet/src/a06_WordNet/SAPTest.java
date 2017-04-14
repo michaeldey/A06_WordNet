@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Stack;
 
 public class SAPTest {
 	
@@ -14,11 +15,6 @@ public class SAPTest {
 	
 	In in2 = new In("Digraph1_cycle.txt");
 	Digraph DigraphWithCycle = new Digraph(in2);
-
-	@Test
-	public void testSAP() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	public void testIsDAG() {
@@ -66,12 +62,29 @@ public class SAPTest {
 
 	@Test
 	public void testLengthIterableOfIntegerIterableOfInteger() {
-		fail("Not yet implemented");
+		Stack<Integer> stack1 = new Stack<Integer>();
+		Stack<Integer> stack2 = new Stack<Integer>();
+		stack1.push(8);
+		stack1.push(7);
+		stack2.push(2);
+		stack2.push(10);
+		SAP mySAP = new SAP(DigraphNoCycle);
+		assertEquals(mySAP.length(stack1, stack2),3);
+		assertNotEquals(mySAP.length(stack1, stack2),4);
+		   
 	}
 
 	@Test
 	public void testAncestorIterableOfIntegerIterableOfInteger() {
-		fail("Not yet implemented");
+		Stack<Integer> stack1 = new Stack<Integer>();
+		Stack<Integer> stack2 = new Stack<Integer>();
+		stack1.push(8);
+		stack1.push(7);
+		stack2.push(2);
+		stack2.push(10);
+		SAP mySAP = new SAP(DigraphNoCycle);
+		assertEquals(mySAP.ancestor(stack1, stack2),5);
+		assertNotEquals(mySAP.ancestor(stack1, stack2),1);
 	}
 
 }

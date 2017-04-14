@@ -82,13 +82,15 @@ public class SAP {
 	   // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
 	   public int length(Iterable<Integer> v, Iterable<Integer> w)
 	   {
-		   BreadthFirstDirectedPaths BFS = new BreadthFirstDirectedPaths(G, v);//create BFS from v		   
-			   int comAnc = ancestor(v, w);
-			   if(comAnc != -1)
-			   {					// If there is a common ancestor, return length of v to comAnc + w to comAnc
-				   BreadthFirstDirectedPaths BFSW = new BreadthFirstDirectedPaths(G, w);
-				   return BFS.distTo(comAnc) + BFSW.distTo(comAnc);
+		   if(isRootedDAG()){ //Brute Force to find length
+			   BST<Integer, Integer> bst = new BST<>();
+			   for(int i: v){
+				   for(int j: w){
+					   bst.put(length(i, j), ancestor(i, j));
+				   }
 			   }
+			   return bst.min();
+		   }
 		   return -1;
 	   }
 
@@ -96,21 +98,29 @@ public class SAP {
 	   public int ancestor(Iterable<Integer> v, Iterable<Integer> w)
 	   {
 		   if (isRootedDAG()){		//both points end at same root
-			   BreadthFirstDirectedPaths bfpV = new BreadthFirstDirectedPaths(G, v); 
-			   BreadthFirstDirectedPaths bfpW = new BreadthFirstDirectedPaths(G, w); 
-			   int root = findRoot(0);
-			   Stack<Integer> sV =  (Stack<Integer>) bfpV.pathTo(root);
-			   BST<Integer, Integer> bst = new BST<Integer, Integer>();
-			   System.out.println("BST: ");
-			   for(int i: bfpW.pathTo(root)){
-				   System.out.println(i);
-				   bst.put(i, i);
+//			   BreadthFirstDirectedPaths bfpV = new BreadthFirstDirectedPaths(G, v); 
+//			   BreadthFirstDirectedPaths bfpW = new BreadthFirstDirectedPaths(G, w); 
+			   BST<Integer, Integer> bst = new BST<>();//BST Brute Force to find ancestor 
+			   for(int i: v){
+				   for(int j: w){
+					   bst.put(length(i, j), ancestor(i, j));
+				   }
 			   }
-			   System.out.println("\nStack: ");
-			   for(int i: sV){
-				   System.out.println(i);
-				   if(bst.contains(i)) return i;
-			   }
+			   return bst.get(bst.min());
+			   
+//			   int root = findRoot(0);
+//			   Stack<Integer> sV =  (Stack<Integer>) bfpV.pathTo(root);
+//			   BST<Integer, Integer> bst = new BST<Integer, Integer>();
+//			   System.out.println("BST: ");
+//			   for(int i: bfpW.pathTo(root)){
+//				   System.out.println(i);
+//				   bst.put(i, i);
+//			   }
+//			   System.out.println("\nStack: ");
+//			   for(int i: sV){
+//				   System.out.println(i);
+//				   if(bst.contains(i)) return i;
+//			   }
 		   }
 		   return -1;
 	   }
@@ -134,8 +144,8 @@ public class SAP {
 		   
 		   Stack<Integer> stack1 = new Stack<Integer>();
 		   Stack<Integer> stack2 = new Stack<Integer>();
-		   stack1.push(7);
 		   stack1.push(8);
+		   stack1.push(7);
 		   stack2.push(2);
 		   stack2.push(10);
 		   
@@ -143,6 +153,7 @@ public class SAP {
 		   SAP mySAP = new SAP(testDigraph);
 		   //System.out.println(mySAP.isDAG());
 		   //System.out.println(mySAP.findRoot(8)); 
-		   System.out.println("\n"+mySAP.ancestor(stack1, stack2));
+		   System.out.println(mySAP.ancestor(stack1, stack2));
+		   System.out.println(mySAP.length(stack1, stack2));
 	   }
 	}
