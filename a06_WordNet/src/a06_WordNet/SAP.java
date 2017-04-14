@@ -50,7 +50,13 @@ public class SAP {
 	   public int ancestor(int v, int w)
 	   {
 		   Queue qV = new Queue();
-		   BST b
+		   BST bst = new BST();
+		   
+		   while (G.outdegree(v) != 0){
+			   qV.enqueue(v);
+			   
+		   }
+		   return 1;
 		   
 	   }
 

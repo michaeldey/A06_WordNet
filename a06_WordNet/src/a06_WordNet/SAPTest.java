@@ -34,7 +34,16 @@ public class SAPTest {
 
 	@Test
 	public void testIsRootedDAG() {
-		fail("Not yet implemented");
+		In in3 = new In("Digraph1NoRoot.txt");
+		Digraph DigraphNoRoot = new Digraph(in3);
+		
+		SAP noCycleSap = new SAP(DigraphNoCycle);
+		SAP cycleSap = new SAP(DigraphWithCycle);
+		SAP cycleNoRoot = new SAP(DigraphNoRoot);
+		
+		assertTrue(noCycleSap.isRootedDAG());
+		assertFalse(cycleSap.isRootedDAG());
+		assertFalse(cycleNoRoot.isRootedDAG());
 	}
 
 	@Test
