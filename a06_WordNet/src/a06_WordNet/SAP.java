@@ -5,6 +5,7 @@ import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.DirectedCycle;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.BST;
 
 public class SAP {
 	
@@ -27,8 +28,12 @@ public class SAP {
 	   public boolean isRootedDAG()
 	   {
 		   if (isDAG()){
-			   //logic still needs work
-			   return true;
+			   int rootCount = 0;
+			   for(int v = 0; v < G.V(); v++){
+				   if (G.outdegree(v) == 0) rootCount++;
+			   }
+			   if (rootCount != 1) return false;
+			   else return true;
 		   }
 		   return false;
 	   }
@@ -44,7 +49,9 @@ public class SAP {
 	   // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
 	   public int ancestor(int v, int w)
 	   {
-		   return 0;
+		   Queue qV = new Queue();
+		   BST b
+		   
 	   }
 
 	   // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
