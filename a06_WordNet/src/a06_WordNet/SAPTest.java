@@ -52,12 +52,16 @@ public class SAPTest {
 		assertEquals(sapL.length(7, 3), 1); //check length of 1
 		assertNotEquals(sapL.length(7, 3), 2); //check if we have a misfire on length of 1
 		assertEquals(sapL.length(6, 0),3);
-		assertEquals(sapL.length(8, 10), -1); //-1 if no path between the two
+		assertEquals(sapL.length(8, 10), 3); //-1 if no path between the two
+		assertEquals(sapL.length(8, 6), 4);
 	}
 
 	@Test
 	public void testAncestorIntInt() {
-		fail("Not yet implemented");
+		SAP sap = new SAP(DigraphNoCycle);
+		assertEquals(sap.ancestor(6, 10), 1);
+		assertEquals(sap.ancestor(11, 8), 5);
+		assertNotEquals(sap.ancestor(11, 7), 5);
 	}
 
 	@Test
