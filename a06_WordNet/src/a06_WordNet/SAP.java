@@ -97,32 +97,28 @@ public class SAP {
 	   // a common ancestor that participates in shortest ancestral path; -1 if no such path
 	   public int ancestor(Iterable<Integer> v, Iterable<Integer> w)
 	   {
+		   int ancestor = -1;
 		   if (isRootedDAG()){		//both points end at same root
-//			   BreadthFirstDirectedPaths bfpV = new BreadthFirstDirectedPaths(G, v); 
-//			   BreadthFirstDirectedPaths bfpW = new BreadthFirstDirectedPaths(G, w); 
-			   BST<Integer, Integer> bst = new BST<>();//BST Brute Force to find ancestor 
-			   for(int i: v){
-				   for(int j: w){
-					   bst.put(length(i, j), ancestor(i, j));
+			   int shortest = Integer.MAX_VALUE;
+			   Stack<Integer> ancestors = new Stack<>();
+			   BreadthFirstDirectedPaths bfdsV = new BreadthFirstDirectedPaths(G, v);
+			   BreadthFirstDirectedPaths bfdsW = new BreadthFirstDirectedPaths(G, w);
+			   
+			   for (int i = 0; i< G.V(); i++){
+				   if (bfdsV.hasPathTo(i) && bfdsW.hasPathTo(i)){
+					   ancestors.push(i);
 				   }
 			   }
-			   return bst.get(bst.min());
 			   
-//			   int root = findRoot(0);
-//			   Stack<Integer> sV =  (Stack<Integer>) bfpV.pathTo(root);
-//			   BST<Integer, Integer> bst = new BST<Integer, Integer>();
-//			   System.out.println("BST: ");
-//			   for(int i: bfpW.pathTo(root)){
-//				   System.out.println(i);
-//				   bst.put(i, i);
-//			   }
-//			   System.out.println("\nStack: ");
-//			   for(int i: sV){
-//				   System.out.println(i);
-//				   if(bst.contains(i)) return i;
-//			   }
+			   for (Integer i: ancestors){
+				   int distance = bfdsV.distTo(i) + bfdsW.distTo(i);
+				   if (distance < shortest){
+					   shortest = distance;
+					   ancestor = i;
+				   }
+			   }
 		   }
-		   return -1;
+		   return ancestor;
 	   }
 	   
 	   // The vertex number of the root node; -1 if no root found.

@@ -12,9 +12,11 @@ import edu.princeton.cs.algs4.ST;
 
 public class WordNet {
 	
-		private ST <Integer,String[]>symbolTree = new ST<Integer, String[]>();
+		private ST<Integer,String> symbolTree = new ST<>();
+		private ST<String, Integer> symbolTreeReversed = new ST<>();
 		private Digraph G;
 		private int vertexCount=0;
+		private SAP sap;
 
 	   // constructor takes the name of the two input files
 	   public WordNet(String synsets, String hypernyms)
@@ -30,6 +32,7 @@ public class WordNet {
 		   this.G = new Digraph(vertexCount);
 		   
 		   createHypernymDigraph(hypIn);//create Digraph from hypernyms file
+		   this.sap = new SAP(this.G);
 	   }
 	   
 	   private void createSynsetST(In synIn)
@@ -44,7 +47,8 @@ public class WordNet {
 			 try
 			 {
 				 //send to symbol tree the first value in the line as an integer, the rest of the values are sent as a string array
-				 symbolTree.put(Integer.parseInt(values[0]), Arrays.copyOfRange(values, 1, (values.length-1)));
+				 symbolTree.put(Integer.parseInt(values[0]), values[1]);
+				 symbolTreeReversed.put(values[1], Integer.parseInt(values[0]));
 			 }catch(NumberFormatException e)
 			 {
 				 System.out.println("File is in incorrect format. First value in line must be an integer. " + e.getMessage());
@@ -76,13 +80,13 @@ public class WordNet {
 	   // returns all WordNet nouns
 	   public Iterable<String> nouns()
 	   {
-		   return null;
+		   return symbolTreeReversed.keys();
 	   }
 
 	   // is the word a WordNet noun?
 	   public boolean isNoun(String word)
 	   {
-		   return false;
+		   return symbolTreeReversed.contains(word);
 	   }
 
 	   // distance between nounA and nounB (defined below)
@@ -105,5 +109,6 @@ public class WordNet {
 		   String hypernymsFile = "hypernyms.txt";
 		   
 		   WordNet wordNet = new WordNet(synsetFile, hypernymsFile);
+		   
 	   }
 	}
