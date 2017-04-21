@@ -1,10 +1,5 @@
 package a06_WordNet;
 
-import edu.princeton.cs.algs4.Queue;
-
-import java.util.Arrays;
-
-import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.ST;
@@ -23,14 +18,9 @@ public class WordNet {
 	   {
 		   In synIn = new In(synsets);
 		   In hypIn = new In(hypernyms);
-		   
-		   String synLine, synIndex, synNoun;
-		   
 		   createSynsetST(synIn); //create symbol table from synset file
-
 		   //set up our Digraph
 		   this.G = new Digraph(vertexCount);
-		   
 		   createHypernymDigraph(hypIn);//create Digraph from hypernyms file
 		   this.sap = new SAP(this.G);
 	   }
@@ -92,14 +82,14 @@ public class WordNet {
 	   // distance between nounA and nounB (defined below)
 	   public int distance(String nounA, String nounB)
 	   {
-		   return 0;
+		   return sap.length(symbolTreeReversed.get(nounA), symbolTreeReversed.get(nounB));
 	   }
 
 	   // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
 	   // in a shortest ancestral path (defined below)
 	   public String sap(String nounA, String nounB)
 	   {
-		   return null;
+		   return symbolTree.get(sap.ancestor(symbolTreeReversed.get(nounA), symbolTreeReversed.get(nounB)));
 	   }
 
 	   // do unit testing of this class
@@ -109,6 +99,6 @@ public class WordNet {
 		   String hypernymsFile = "hypernyms.txt";
 		   
 		   WordNet wordNet = new WordNet(synsetFile, hypernymsFile);
-		   
+		   System.out.println(wordNet.distance("zebra", "table"));
 	   }
 	}
