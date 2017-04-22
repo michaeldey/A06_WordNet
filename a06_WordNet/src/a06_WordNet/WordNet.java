@@ -16,13 +16,20 @@ public class WordNet {
 	   // constructor takes the name of the two input files
 	   public WordNet(String synsets, String hypernyms)
 	   {
-		   In synIn = new In(synsets);
-		   In hypIn = new In(hypernyms);
-		   createSynsetST(synIn); //create symbol table from synset file
-		   //set up our Digraph
-		   this.G = new Digraph(vertexCount);
-		   createHypernymDigraph(hypIn);//create Digraph from hypernyms file
-		   this.sap = new SAP(this.G);
+		   try{
+			   In synIn = new In(synsets);
+			   In hypIn = new In(hypernyms);
+			   
+			   createSynsetST(synIn); //create symbol table from synset file
+			   //set up our Digraph
+			   this.G = new Digraph(vertexCount);
+			   createHypernymDigraph(hypIn);//create Digraph from hypernyms file
+			   this.sap = new SAP(this.G);
+		   }
+		   catch(java.lang.IllegalArgumentException e)
+		   {
+			   System.out.println("Cannot read one or both files: "+e.getMessage());
+		   }
 	   }
 	   
 	   private void createSynsetST(In synIn)
@@ -95,10 +102,13 @@ public class WordNet {
 	   // do unit testing of this class
 	   public static void main(String[] args)
 	   {
-		   String synsetFile = "synsets.txt";
-		   String hypernymsFile = "hypernyms.txt";
+		   String synsetFile = "synsets.txt"; 
+		   String hypernymsFile = "hypernyms.txt";//38003 is the root
 		   
 		   WordNet wordNet = new WordNet(synsetFile, hypernymsFile);
 		   System.out.println(wordNet.distance("zebra", "table"));
+		   
+		   
+		  
 	   }
 	}
