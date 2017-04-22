@@ -89,6 +89,9 @@ public class WordNet {
 	   // distance between nounA and nounB (defined below)
 	   public int distance(String nounA, String nounB)
 	   {
+		   if(!this.symbolTreeReversed.contains(nounA) || !this.symbolTreeReversed.contains(nounB)){
+			   throw new IllegalArgumentException("Nouns aren't contained in the synsets list.");
+		   }
 		   return sap.length(symbolTreeReversed.get(nounA), symbolTreeReversed.get(nounB));
 	   }
 
@@ -96,6 +99,9 @@ public class WordNet {
 	   // in a shortest ancestral path (defined below)
 	   public String sap(String nounA, String nounB)
 	   {
+		   if(!this.symbolTreeReversed.contains(nounA) || !this.symbolTreeReversed.contains(nounB)){
+			   throw new IllegalArgumentException("Nouns aren't contained in the synsets list.");
+		   }
 		   return symbolTree.get(sap.ancestor(symbolTreeReversed.get(nounA), symbolTreeReversed.get(nounB)));
 	   }
 
