@@ -55,9 +55,11 @@ public class WordNetTest {
 
 	@Test
 	public void testSap() {
-		System.out.println("Sap: " + wN.sap("d", "c"));
-		
-		fail("Not yet implemented");
+		assertEquals("a", wN.sap("a", "d"));
+		assertEquals("a", wN.sap("d", "a"));
+		assertEquals("c", wN.sap("c", "d"));
+		assertEquals("c", wN.sap("d", "c"));
+		assertNotEquals("b", wN.sap("b", "a"));
 	}
 
 }
