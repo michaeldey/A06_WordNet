@@ -18,7 +18,7 @@ public class WordNet {
 	   {
 		   try{
 			   In synIn = new In(synsets);
-			   In hypIn = new In(hypernyms);
+			   In hypIn = new In(hypernyms);			  
 			   
 			   createSynsetST(synIn); //create symbol table from synset file
 			   //set up our Digraph

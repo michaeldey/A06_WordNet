@@ -56,6 +56,7 @@ public class WordNetTest {
 	@Test
 	public void testSap() {
 		System.out.println("Sap: " + wN.sap("d", "c"));
+		
 		fail("Not yet implemented");
 	}
 
