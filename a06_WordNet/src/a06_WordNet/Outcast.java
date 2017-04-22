@@ -1,8 +1,6 @@
 package a06_WordNet;
 
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdOut;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Outcast {
 	
@@ -15,23 +13,32 @@ public class Outcast {
 	
 	public String outcast(String[] nouns) // given an array of WordNet nouns, return an outcast
 	{   
-		int[] distances = new int[nouns.length];
-		int max = 0;
-		for(int i = 0; i < nouns.length; i++){
-			int sumOfDistances = 0;
-			System.out.println("\n"+i+":");
-			for(int j = 0; j < nouns.length; j++){
-				int dist = wordnet.distance(nouns[i], nouns[j]);
-				sumOfDistances = sumOfDistances + dist;//current sum + new distance
-				System.out.println(dist);
-			}
-			distances[i] = sumOfDistances;
-			if(sumOfDistances > max){
-				max = sumOfDistances;
-			}
+		ArrayList<String> nounsUsed = new ArrayList<>();
+		for(String n: nouns)
+		{
+			//Create an ArrayList of Strings that are in the synsets.txt
+			if (wordnet.isNoun(n)) nounsUsed.add(n);
 		}
 		
-		return "";
+		int max = 0;
+		String maxString = "";
+		for(int i = 0; i < nounsUsed.size(); i++)
+		{
+			int sumOfDistances = 0;
+			for(int j = 0; j < nounsUsed.size(); j++)
+			{
+
+				int dist = wordnet.distance(nounsUsed.get(i), nounsUsed.get(j));
+				sumOfDistances = sumOfDistances + dist;//current sum + new distance
+			}
+			
+			if(sumOfDistances > max)
+			{
+				max = sumOfDistances;
+				maxString = nounsUsed.get(i);
+			}
+		}
+		return maxString;
 	}
 	
 	public static void main(String[] args){	 // see test client below 
@@ -39,7 +46,11 @@ public class Outcast {
 		//followed by the names of outcast files, and prints out an outcast in each file:
 		WordNet wordnet = new WordNet("synsets.txt", "hypernyms.txt");
 		Outcast outcast = new Outcast(wordnet);
-	    String[] nouns = {"apple", "pear", "peach", "banana", "lime", "lemon", "blueberry", "strawberry", "mango", "watermelon", "potato"};
+	    String[] nouns = {"apple", "pear", "peach", "banana", "lime", "blueberry", "strawberry", "mango", "watermelon", "table"};
+	    String[] nouns1 = {"horse", "zebra", "bear", "table"};
+
 	    System.out.println(outcast.outcast(nouns));
+	    System.out.println(outcast.outcast(nouns1));
+	    
    }
 }
