@@ -28,11 +28,11 @@ public class WordNet {
 		   }
 		   catch(java.lang.IllegalArgumentException e)
 		   {
-			   System.out.println("Cannot read one or both files: "+e.getMessage());
+			   throw new java.lang.IllegalArgumentException("Cannot read one or both files.");
 		   }
 	   }
 	   
-	   private void createSynsetST(In synIn)
+	   private void createSynsetST(In synIn) throws java.lang.NumberFormatException
 	   {
 		 //create a symbol tree based on Synsets file, splitting the first value as the key, subsequent values in the line as string array
 		   while (synIn.hasNextLine())		//change this to a while statement after testing
@@ -46,14 +46,14 @@ public class WordNet {
 				 //send to symbol tree the first value in the line as an integer, the rest of the values are sent as a string array
 				 symbolTree.put(Integer.parseInt(values[0]), values[1]);
 				 symbolTreeReversed.put(values[1], Integer.parseInt(values[0]));
-			 }catch(NumberFormatException e)
+			 }catch(java.lang.NumberFormatException e)
 			 {
-				 System.out.println("File is in incorrect format. First value in line must be an integer. " + e.getMessage());
+				 throw new NumberFormatException("Synset error:First value in line must be an integer.");
 			 }	 			 
 		   } 
 	   }
 	   
-	   private void createHypernymDigraph(In hypIn)
+	   private void createHypernymDigraph(In hypIn) throws java.lang.NumberFormatException 
 	   {
 		   while (hypIn.hasNextLine())
 		   {
@@ -67,9 +67,9 @@ public class WordNet {
 					   int W = Integer.parseInt(values[i]);
 					   this.G.addEdge(V, W);
 				   }
-			   }catch(NumberFormatException e)
+			   }catch(java.lang.NumberFormatException e)
 			   {
-				   System.out.println("File is in incorrect format. All values must be integers." + e.getMessage());
+				   throw new java.lang.NumberFormatException("Hypernyms error: First value in file must be an integer");
 			   }
 		   }
 	   }

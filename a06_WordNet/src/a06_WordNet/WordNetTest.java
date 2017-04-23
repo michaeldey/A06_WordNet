@@ -13,13 +13,15 @@ public class WordNetTest {
 	String hypernymsFile = "hypernymsTEST.txt";
 	WordNet wN = new WordNet(synsetFile,hypernymsFile);
 	
-	@Rule 
-	public final ExpectedException exception = ExpectedException.none();
 	
-	@Test 
+	@Test(expected = IllegalArgumentException.class) 
 	public void testWordNetIncorrectFile() {	
-    	exception.expect(java.lang.IllegalArgumentException.class);	  	
-    	WordNet badWN = new WordNet("bad","bad2");
+  	
+    	WordNet badWN1 = new WordNet("BADsynsetsTEST.txt","hypernymsTEST.txt");
+    	WordNet badWN2 = new WordNet("synsetsTEST.txt","BADhypernymsTEST.txt");
+    	WordNet badWN3 = new WordNet(null,"hypernymsTEST.txt");
+    	WordNet badWN4 = new WordNet("synsetsTEST.txt",null);
+    	WordNet badWN5 = new WordNet(null,null);
 	}
 
 	@Test
