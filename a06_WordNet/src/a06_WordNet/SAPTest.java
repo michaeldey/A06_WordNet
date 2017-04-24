@@ -10,16 +10,15 @@ import edu.princeton.cs.algs4.Stack;
 
 public class SAPTest {
 	
-	In in = new In("Digraph1.txt");
-	Digraph DigraphNoCycle = new Digraph(in);
+	//setting up files to test the SAP class
+	In in = new In("Digraph1.txt");				
+	Digraph DigraphNoCycle = new Digraph(in);	//this Digraph has no cycle
 	
 	In in2 = new In("Digraph1_cycle.txt");
-	Digraph DigraphWithCycle = new Digraph(in2);
+	Digraph DigraphWithCycle = new Digraph(in2); //this Digraph has a cycle
 
 	@Test
-	public void testIsDAG() {
-		
-		
+	public void testIsDAG() {		
 		SAP noCycleSap = new SAP(DigraphNoCycle);
 		SAP cycleSap = new SAP(DigraphWithCycle);
 		
@@ -30,7 +29,7 @@ public class SAPTest {
 
 	@Test
 	public void testIsRootedDAG() {
-		In in3 = new In("Digraph1NoRoot.txt");
+		In in3 = new In("Digraph1NoRoot.txt");		//this Digraph has no root
 		Digraph DigraphNoRoot = new Digraph(in3);
 		
 		SAP noCycleSap = new SAP(DigraphNoCycle);
@@ -62,27 +61,30 @@ public class SAPTest {
 
 	@Test
 	public void testLengthIterableOfIntegerIterableOfInteger() {
+		//create two Stacks to send to SAP
 		Stack<Integer> stack1 = new Stack<Integer>();
 		Stack<Integer> stack2 = new Stack<Integer>();
 		stack1.push(8);
 		stack1.push(7);
 		stack2.push(2);
 		stack2.push(10);
-		SAP mySAP = new SAP(DigraphNoCycle);
+		
+		SAP mySAP = new SAP(DigraphNoCycle);			//we use this file to test against the Stacks
 		assertEquals(mySAP.length(stack1, stack2),3);
-		assertNotEquals(mySAP.length(stack1, stack2),4);
-		   
+		assertNotEquals(mySAP.length(stack1, stack2),4);		   
 	}
 
 	@Test
 	public void testAncestorIterableOfIntegerIterableOfInteger() {
+		//create two stacks to send to SAP
 		Stack<Integer> stack1 = new Stack<Integer>();
 		Stack<Integer> stack2 = new Stack<Integer>();
 		stack1.push(8);
 		stack1.push(7);
 		stack2.push(2);
 		stack2.push(10);
-		SAP mySAP = new SAP(DigraphNoCycle);
+		
+		SAP mySAP = new SAP(DigraphNoCycle);			//we use this file to test against the Stacks
 		assertEquals(mySAP.ancestor(stack1, stack2),5);
 		assertNotEquals(mySAP.ancestor(stack1, stack2),1);
 	}

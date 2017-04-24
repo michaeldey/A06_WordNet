@@ -1,3 +1,9 @@
+/**
+ * @author Jared Edwards, Michael Dey
+ * CSIS 2420-004
+ * Assignment: WordNet
+ *
+ */
 package a06_WordNet;
 
 import static org.junit.Assert.*;
@@ -15,8 +21,8 @@ public class WordNetTest {
 	
 	
 	@Test(expected = IllegalArgumentException.class) 
-	public void testWordNetIncorrectFile() {	
-  	
+	public void testWordNetIncorrectFile() {  	
+		//test for catching files with incorrect data formatting
     	WordNet badWN1 = new WordNet("BADsynsetsTEST.txt","hypernymsTEST.txt");
     	WordNet badWN2 = new WordNet("synsetsTEST.txt","BADhypernymsTEST.txt");
     	WordNet badWN3 = new WordNet(null,"hypernymsTEST.txt");
@@ -42,7 +48,7 @@ public class WordNetTest {
 	@Test
 	public void testIsNoun() {
 		assertTrue(wN.isNoun("a"));
-		assertFalse(wN.isNoun("zzz"));
+		assertFalse(wN.isNoun("zzz")); //"zzz" is not a noun in the given set
 	}
 
 	@Test

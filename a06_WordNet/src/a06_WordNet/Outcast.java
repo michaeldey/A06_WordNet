@@ -1,16 +1,40 @@
+/**
+ * @author Jared Edwards, Michael Dey
+ * CSIS 2420-004
+ * Assignment: WordNet
+ *
+ */
 package a06_WordNet;
 
 import java.util.ArrayList;
+
 
 public class Outcast {
 	
 	private WordNet wordnet;
 	
+	
+	/**
+	 * @param wordnet WordNet object
+	 * 
+	 * Constructor takes a WordNet object 
+	 * throws an IllegalArgumentException if not a WordNet object
+	 */
 	public Outcast(WordNet wordnet)	// constructor takes a WordNet object
 	{          
 		   this.wordnet = wordnet;
+		   if (!(wordnet instanceof WordNet)){
+			   throw new IllegalArgumentException("Outcast not given a proper WordNet object");
+		   }
 	}
 	
+	
+	/**
+	 * @param nouns String[] that holds a group of nouns to find the outcast
+	 * @return String value of outcast
+	 * 
+	 * Searches each String in the array, and returns the String farthest from the rest
+	 */
 	public String outcast(String[] nouns) // given an array of WordNet nouns, return an outcast
 	{   
 		ArrayList<String> nounsUsed = new ArrayList<>();
@@ -27,7 +51,6 @@ public class Outcast {
 			int sumOfDistances = 0;
 			for(int j = 0; j < nounsUsed.size(); j++)
 			{
-
 				int dist = wordnet.distance(nounsUsed.get(i), nounsUsed.get(j));
 				sumOfDistances = sumOfDistances + dist;//current sum + new distance
 			}

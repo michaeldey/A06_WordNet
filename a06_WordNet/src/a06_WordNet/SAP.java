@@ -1,3 +1,9 @@
+/**
+ * @author Jared Edwards, Michael Dey
+ * CSIS 2420-004
+ * Assignment: WordNet
+ *
+ */
 package a06_WordNet;
 
 import edu.princeton.cs.algs4.Stack;
@@ -12,21 +18,35 @@ public class SAP {
 	
 		private Digraph G;
 
-	   // constructor takes a digraph (not necessarily a DAG)
-	   public SAP(Digraph G)
+	   /**
+	 * @param G Digraph object (not necessarily a DAG)
+	 */
+	public SAP(Digraph G)
 	   {
 		   this.G = G;
+		   if (!(G instanceof Digraph)){
+			   throw new IllegalArgumentException("SAP not given a proper Digraph object");
+		   }
 	   }
 
-	   // is the digraph a directed acyclic graph?
-	   public boolean isDAG()
+	   /**
+	 * @return True if digraph is a directed acyclic graph, False if not
+	 * 
+	 * Uses a DirectedCycle object to test if G has a cycle
+	 */
+	public boolean isDAG()
 	   {
 		   DirectedCycle DC = new DirectedCycle(G);
 		   return !DC.hasCycle();
 	   }
 
-	   // is the digraph a rooted DAG?
-	   public boolean isRootedDAG()
+	   /**
+	 * @return True if digraph is a rooted DAG
+	 * 
+	 * Searches through G and counts in rootcount all vertexes with an outdegree of 0
+	 * if the rootcount !=1, we assume there is no one single root
+	 */
+	public boolean isRootedDAG()
 	   {
 		   if (isDAG()){
 			   int rootCount = 0;
@@ -39,8 +59,14 @@ public class SAP {
 		   return false;
 	   }
 
-	   // length of shortest ancestral path between v and w; -1 if no such path
-	   public int length(int v, int w)
+	   /**
+	 * @param v first vertex to search for
+	 * @param w second vertex to search for
+	 * @return int value of length of shortest ancestral path between v and w; -1 if no such path
+	 * 
+	 * Uses Breadth First Search to find shortest ancestral path between v and w
+	 */
+	public int length(int v, int w)
 	   {
 		   BreadthFirstDirectedPaths BFS = new BreadthFirstDirectedPaths(G, v);//create BFS from v		   
 		   if (BFS.hasPathTo(w))
@@ -58,8 +84,16 @@ public class SAP {
 		   return -1;
 	   }
 
-	   // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
-	   public int ancestor(int v, int w)
+	   /**
+	 * @param v vertex to search for
+	 * @param w vertex to search for
+	 * @return common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
+	 * 
+	 * Creates a Stack<Integer> of all points from v to root
+	 * Creates a BST<Integer, Integer> of all points from w to root
+	 * Searches the BST for items from the stack, as soon as an item is found, we have found the common ancestor
+	 */
+	public int ancestor(int v, int w)
 	   {
 		   if (isRootedDAG()){		//both points end at same root
 			   DepthFirstDirectedPaths dfpV = new DepthFirstDirectedPaths(G, v); 
@@ -79,8 +113,12 @@ public class SAP {
 		   
 	   }
 
-	   // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
-	   public int length(Iterable<Integer> v, Iterable<Integer> w)
+	   /**
+	 * @param v vertex to search for
+	 * @param w vertex to search for
+	 * @return length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
+	 */
+	public int length(Iterable<Integer> v, Iterable<Integer> w)
 	   {
 		   if(isRootedDAG()){ //Brute Force to find length
 			   BST<Integer, Integer> bst = new BST<>();
@@ -94,8 +132,15 @@ public class SAP {
 		   return -1;
 	   }
 
-	   // a common ancestor that participates in shortest ancestral path; -1 if no such path
-	   public int ancestor(Iterable<Integer> v, Iterable<Integer> w)
+	   /**
+	 * @param v vertex to search for
+	 * @param w vertex to search for
+	 * @return a common ancestor that participates in shortest ancestral path; -1 if no such path
+	 * 
+	 * Searches all items in Iterable v for all shortest ancestral paths in Iterable w, 
+	 * and returns the common ancestor with shortest ancestral path of both Iterators
+	 */
+	public int ancestor(Iterable<Integer> v, Iterable<Integer> w)
 	   {
 		   int ancestor = -1;
 		   if (isRootedDAG()){		//both points end at same root
@@ -121,8 +166,12 @@ public class SAP {
 		   return ancestor;
 	   }
 	   
-	   // The vertex number of the root node; -1 if no root found.
-	   private int findRoot(int v){
+
+	   /**
+	 * @param v given vertex
+	 * @return The vertex number of the root node; -1 if no root found.
+	 */
+	private int findRoot(int v){
 		   int root = -1;
 		   for(int i = 0; i < G.V(); i++){
 			   if (G.outdegree(i) == 0) root = i;

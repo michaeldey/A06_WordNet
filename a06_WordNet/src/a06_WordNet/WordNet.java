@@ -1,3 +1,9 @@
+/**
+ * @author Jared Edwards, Michael Dey
+ * CSIS 2420-004
+ * Assignment: WordNet
+ *
+ */
 package a06_WordNet;
 
 import edu.princeton.cs.algs4.Digraph;
@@ -13,8 +19,19 @@ public class WordNet {
 		private int vertexCount=0;
 		private SAP sap;
 
-	   // constructor takes the name of the two input files
-	   public WordNet(String synsets, String hypernyms)
+
+	   /**
+	 * @param synsets String that indicates file name of synset file
+	 * @param hypernyms String that indicates file name of hypernym file
+	 * 
+	 * Takes Two file names (1 for Synsets, and 1 for Hypernyms)
+	 * Creates a symbol table from the synsets file
+	 * 		When symbol table is created, it counts the vertexes
+	 * Creates a Digraph from the vertex count
+	 * Creates a Digraph from the hypernyms file
+	 * Creates a SAP based on G
+	 */
+	public WordNet(String synsets, String hypernyms)
 	   {
 		   try{
 			   In synIn = new In(synsets);
@@ -32,7 +49,14 @@ public class WordNet {
 		   }
 	   }
 	   
-	   private void createSynsetST(In synIn) throws java.lang.NumberFormatException
+	   /**
+	 * @param synIn synset file name
+	 * @throws java.lang.NumberFormatException if file cannot be read
+	 * 
+	 * This method creates and builds a symbol tree based on the synsets file
+	 * It also keeps a count of the vertexes for use in the constructor
+	 */
+	private void createSynsetST(In synIn) throws java.lang.NumberFormatException
 	   {
 		 //create a symbol tree based on Synsets file, splitting the first value as the key, subsequent values in the line as string array
 		   while (synIn.hasNextLine())		//change this to a while statement after testing
@@ -53,7 +77,13 @@ public class WordNet {
 		   } 
 	   }
 	   
-	   private void createHypernymDigraph(In hypIn) throws java.lang.NumberFormatException 
+	   /**
+	 * @param hypIn hypernyms file
+	 * @throws java.lang.NumberFormatException if file cannot be read properly
+	 * 
+	 * This method builds Digraph (G) by adding the edges indicated in the hypernyms file
+	 */
+	private void createHypernymDigraph(In hypIn) throws java.lang.NumberFormatException 
 	   {
 		   while (hypIn.hasNextLine())
 		   {
@@ -62,6 +92,7 @@ public class WordNet {
 			   try
 			   {
 				   int V = Integer.parseInt(values[0]);
+				   //for all the integers in the hypernym file, build a Digraph out of G
 				   for (int i = 1; i < values.length; i++)
 				   {
 					   int W = Integer.parseInt(values[i]);
@@ -74,20 +105,34 @@ public class WordNet {
 		   }
 	   }
 
-	   // returns all WordNet nouns
-	   public Iterable<String> nouns()
+	   /**
+	 * @return all WordNet nouns
+	 */
+	public Iterable<String> nouns()
 	   {
 		   return symbolTreeReversed.keys();
 	   }
 
-	   // is the word a WordNet noun?
-	   public boolean isNoun(String word)
+	   /**
+	 * @param word
+	 * @return True if word is a noun
+	 * 
+	 * Searches the symbol tree for word, returns True if found, False if not found
+	 */
+	public boolean isNoun(String word)
 	   {
 		   return symbolTreeReversed.contains(word);
 	   }
 
-	   // distance between nounA and nounB (defined below)
-	   public int distance(String nounA, String nounB)
+	   /**
+	 * @param nounA String within the symbol tree
+	 * @param nounB String within the symbol tree
+	 * @return int value of distance between nounA and nounB
+	 * 
+	 * Searches through the Symbol tree for nounA and nounB
+	 * uses sap to find the length between the two
+	 */
+	public int distance(String nounA, String nounB)
 	   {
 		   if(!this.symbolTreeReversed.contains(nounA) || !this.symbolTreeReversed.contains(nounB)){
 			   throw new IllegalArgumentException("Nouns aren't contained in the synsets list.");
@@ -95,9 +140,15 @@ public class WordNet {
 		   return sap.length(symbolTreeReversed.get(nounA), symbolTreeReversed.get(nounB));
 	   }
 
-	   // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
-	   // in a shortest ancestral path (defined below)
-	   public String sap(String nounA, String nounB)
+	   /**
+	 * @param nounA String within the symbol tree
+	 * @param nounB String within the symbol tree
+	 * @return String that is common ancestor of nounA and nounB
+	 * 
+	 * Searches the symbol tree using a synset (second field of synsets.txt) that is the common ancestor
+	 * of nounA and nounB in a shortest ancestral path
+	 */
+	public String sap(String nounA, String nounB)
 	   {
 		   if(!this.symbolTreeReversed.contains(nounA) || !this.symbolTreeReversed.contains(nounB)){
 			   throw new IllegalArgumentException("Nouns aren't contained in the synsets list.");
@@ -112,9 +163,6 @@ public class WordNet {
 		   String hypernymsFile = "hypernyms.txt";//38003 is the root
 		   
 		   WordNet wordNet = new WordNet(synsetFile, hypernymsFile);
-		   System.out.println(wordNet.distance("zebra", "table"));
-		   
-		   
-		  
+		   System.out.println(wordNet.distance("zebra", "table"));	  
 	   }
 	}
